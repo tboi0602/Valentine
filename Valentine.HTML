@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thư dành cho bé</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ffebee;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .envelope-container {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .envelope {
+        width: 300px;
+        height: 200px;
+        background: #ffab91;
+        position: relative;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .letter {
+        width: 280px;
+        height: 180px;
+        background: white;
+        position: absolute;
+        top: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: #d32f2f;
+        text-align: center;
+      }
+
+      .heart-container {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .heart {
+        width: 120px;
+        height: 120px;
+        background-color: red;
+        position: relative;
+        transform: rotate(-45deg);
+        animation: heartbeat 1s infinite;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        width: 120px;
+        height: 120px;
+        background-color: red;
+        border-radius: 50%;
+        position: absolute;
+      }
+      .envelope-container {
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+      }
+      .envelope-container:hover {
+        transform: scale(1.05);
+      }
+
+      .envelope {
+        width: 300px;
+        height: 200px;
+        background: linear-gradient(to bottom, #ffab91, #ff8a65);
+        position: relative;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.5s ease-in-out;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        border: 2px solid #ff7043;
+      }
+
+      .envelope::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        width: 120px;
+        height: 100px;
+        background: #ff7043;
+        clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        transform: translateX(-50%);
+      }
+
+      .letter {
+        width: 280px;
+        height: 180px;
+        background: white;
+        position: absolute;
+        top: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: #d32f2f;
+        text-align: center;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .open-envelope .letter {
+        transform: translateY(-150px);
+      }
+
+      .glow-effect {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.5) 10%,
+          rgba(255, 255, 255, 0) 80%
+        );
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .heart::before {
+        top: -60px;
+        left: 0;
+      }
+
+      .heart::after {
+        left: 60px;
+        top: 0;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1) rotate(-45deg);
+        }
+        50% {
+          transform: scale(1.2) rotate(-45deg);
+        }
+      }
+
+      .message {
+        font-size: 24px;
+        color: #d50000;
+        margin-top: 20px;
+      }
+      .small-message {
+        position: absolute;
+        font-size: 20px;
+        font-weight: bold;
+        color: #d50000;
+        opacity: 0;
+        transform-origin: center;
+        transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+      }
+      .show-message {
+        opacity: 1;
+      }
+
+      .fade-image {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: auto;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+        display: none;
+        z-index: 1000;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        position: relative;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .btn-yes {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .btn-no {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .thinking {
+        font-size: 20px;
+        color: #d50000;
+        margin-top: 10px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .thank-you {
+        display: none;
+        font-size: 28px;
+        color: #d50000;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      /* Hiệu ứng trái tim và emoji rơi */
+      .falling-item {
+        position: absolute;
+        font-size: 40px;
+        animation: fall 5s linear infinite;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-100px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh);
+          opacity: 1;
+        }
+      }
+
+      /* Sticker mèo */
+      /*.cat-sticker {
+            position: absolute;
+            width: 120px;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+        */
+      .cat-sticker {
+        position: absolute;
+        width: 100px;
+        display: none;
+        transition: transform 0.5s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="love-music">
+      <source
+        src="https://ia600702.us.archive.org/3/items/y-2mate.com-nhac-nen-vui-cua-do-mixi-you-tube/cc.mp3"
+        type="audio/mp3"
+      />
+    </audio>
+
+    <audio id="intro-music" preload="auto" loop>
+      <source
+        src="https://ia600702.us.archive.org/3/items/y-2mate.com-nhac-nen-vui-cua-do-mixi-you-tube/y2mate.com%20-%20Nh%E1%BA%A1c%20n%E1%BB%81n%20vui%20c%E1%BB%A7a%20%C4%90%E1%BB%99%20mixi%20%20%20YouTube.mp3"
+        type="audio/mp3"
+      />
+    </audio>
+
+    <audio id="boom-sound" preload="auto">
+      <source
+        src="https://tiengdong.com/wp-content/uploads/Boom-sound-effect-www_tiengdong_com.mp3"
+        type="audio/mp3"
+      />
+    </audio>
+
+    <div
+      class="envelope-container"
+      id="envelope-container"
+      onclick="openLetter()"
+    >
+      <div class="envelope">
+        <div class="letter">
+          Happy valentine<br />
+          Mở thư đi babi📩
+        </div>
+      </div>
+    </div>
+
+    <div class="heart-container" id="heart-container">
+      <div class="heart"></div>
+      <div class="message">Sau này bé có lấy anh làm chồng hem❤️</div>
+      <div class="buttons">
+        <button class="btn btn-yes" id="btn-yes" onclick="acceptLove()">
+          Tất nhiên là có gòiii
+        </button>
+        <button class="btn btn-no" id="btn-no" onclick="declineLove()">
+          Không má ơii
+        </button>
+      </div>
+      <div class="thinking" id="thinking">Chắc chưa babi? hic hic</div>
+    </div>
+
+    <div class="thank-you" id="thank-you">Yaaaaa! Anh cũng nghĩ vậy! ❤️</div>
+    <div class="glow-effect"></div>
+
+    <div class="small-messages">
+      <div
+        class="small-message"
+        style="top: 10%; left: 25%; transform: rotate(-10deg)"
+      >
+        Iu bé nhấtttt ❤️
+      </div>
+      <div
+        class="small-message"
+        style="top: 15%; right: 15%; transform: rotate(15deg)"
+      >
+        Bé iu xinh đẹp 😚
+      </div>
+      <div
+        class="small-message"
+        style="bottom: 45%; left: 10%; transform: rotate(-15deg)"
+      >
+        Sao em xinh đẹp vậy???? 🥰
+      </div>
+      <div
+        class="small-message"
+        style="bottom: 10%; right: 40%; transform: rotate(8deg)"
+      >
+        Anh vô cùng yêu emmmmm 🤗
+      </div>
+      <div
+        class="small-message"
+        style="top: 20%; left: 40%; transform: rotate(30deg)"
+      >
+        Má Anh yếu em quáaaaaa 😘
+      </div>
+      <div
+        class="small-message"
+        style="bottom: 10%; left: 15%; transform: rotate(-15deg)"
+      >
+        Dkm Anh yêu emmmmmm 😘
+      </div>
+    </div>
+
+    <div id="thinking-image" class="fade-image">
+      <img
+        src="https://tse4.mm.bing.net/th?id=OIP.1U2LWYi7CnEuQ5I3kE1mwAHaHa&pid=Api&P=0&h=220"
+        alt="Hình ảnh suy nghĩ"
+      />
+    </div>
+
+    <img
+      src="https://tse2.mm.bing.net/th?id=OIP.bhFafTC6FKECib5E-_e74gHaHa&pid=Api&P=0&h=220"
+      alt="Cute cat 1"
+      class="cat-sticker"
+      style="top: 10%; left: 10%; transform: rotate(-15deg)"
+    />
+    <img
+      src="https://tse4.mm.bing.net/th?id=OIP.YtpPcpvNL8pqlZzQmEH2cQHaHF&pid=Api&P=0&h=220"
+      alt="Cute cat 2"
+      class="cat-sticker"
+      style="top: 30%; right: 30%; transform: rotate(10deg)"
+    />
+    <img
+      src="https://tse4.mm.bing.net/th?id=OIP.LwNDc2shOwmMdd4QcP5KGQHaHa&pid=Api&P=0&h=220"
+      alt="Cute cat 3"
+      class="cat-sticker"
+      style="bottom: 20%; left: 5%; transform: rotate(-25deg)"
+    />
+    <img
+      src="https://tse2.mm.bing.net/th?id=OIP.oT7Wdat-wwxHkTWNWgqhDQHaHa&pid=Api&P=0&h=220"
+      alt="Cute cat 4"
+      class="cat-sticker"
+      style="bottom: 10%; right: 25%; transform: rotate(20deg)"
+    />
+    <img
+      src="https://tse4.mm.bing.net/th?id=OIP.DLlTkc_xzzki4Hcz0mJN9wHaHa&pid=Api&P=0&h=220"
+      alt="Cute cat 5"
+      class="cat-sticker"
+      style="top: 55%; left: 40%; transform: rotate(-10deg)"
+    />
+    <img
+      src="https://tse4.mm.bing.net/th?id=OIP.LWCqlb6ixHDXcMYlOAnFkwHaHa&pid=Api&P=0&h=220"
+      alt="Cute cat 6"
+      class="cat-sticker"
+      style="bottom: 45%; right: 5%; transform: rotate(15deg)"
+    />
+
+    <script>
+      let declineCount = 0;
+      /*function openLetter() {
+            document.getElementById("intro-music").play();
+            document.getElementById("envelope-container").style.display = "none";
+            document.getElementById("heart-container").style.display = "flex";
+        }*/
+      function openLetter() {
+        let envelope = document.getElementById("envelope-container");
+        let letter = document.querySelector(".letter");
+
+        document.getElementById("intro-music").play();
+
+        // Hiệu ứng mở thư
+        envelope.classList.add("open-envelope");
+        setTimeout(() => {
+          letter.style.transform = "translateY(-150px) rotate(-2deg)";
+        }, 300);
+
+        setTimeout(() => {
+          document.getElementById("heart-container").style.display = "flex";
+        }, 1000);
+
+        setTimeout(() => {
+          envelope.style.display = "none";
+        }, 2000);
+      }
+
+      function declineLove() {
+        let btnNo = document.getElementById("btn-no");
+        let thinking = document.getElementById("thinking");
+        let boomSound = document.getElementById("boom-sound");
+        let thinkingImage = document.getElementById("thinking-image");
+
+        declineCount++;
+        boomSound.currentTime = 0;
+        boomSound.play();
+
+        thinkingImage.style.display = "block";
+        thinkingImage.style.opacity = "1";
+
+        setTimeout(() => {
+          thinkingImage.style.opacity = "0";
+          if (declineCount === 1) {
+            thinkingImage.style.transform = "translate(-50%, -50%) scale(2)";
+          } else if (declineCount === 2) {
+            thinkingImage.style.transform = "translate(-50%, -50%) scale(3)";
+          } else {
+            thinkingImage.style.transform = "translate(-50%, -50%) scale(4)";
+          }
+        }, 0);
+
+        setTimeout(() => {
+          thinkingImage.style.display = "none";
+        }, 1000);
+
+        if (declineCount === 1) {
+          thinking.style.opacity = 1;
+        } else if (declineCount === 2) {
+          thinking.innerHTML = "Chắc khôngggggg 😢";
+        } else {
+          btnNo.style.display = "none";
+          thinking.innerHTML = "Thôi khỏi click bừa ❤️";
+        }
+      }
+
+      function acceptLove() {
+        document.getElementById("intro-music").pause();
+        document.getElementById("love-music").play();
+        document.getElementById("heart-container").style.display = "none";
+        document.getElementById("thank-you").style.display = "block";
+
+        document.querySelectorAll(".cat-sticker").forEach((sticker, index) => {
+          sticker.style.display = "block";
+          setTimeout(() => {
+            sticker.style.transform += " scale(1.1)";
+          }, index * 200);
+        });
+
+        document.querySelectorAll(".small-message").forEach((msg, index) => {
+          setTimeout(() => {
+            msg.classList.add("show-message");
+          }, index * 300);
+        });
+        setInterval(createFallingItem, 300);
+      }
+
+      function createFallingItem() {
+        const items = ["😍", "🥰", "🤩", "💖", "💗", "💓", "💞", "💘", "❤️"];
+        const item = document.createElement("div");
+        item.classList.add("falling-item");
+        item.innerHTML = items[Math.floor(Math.random() * items.length)];
+        document.body.appendChild(item);
+
+        item.style.left = Math.random() * window.innerWidth + "px";
+        item.style.top = "-50px";
+
+        setTimeout(() => {
+          item.remove();
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
